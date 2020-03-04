@@ -1,0 +1,142 @@
+package EmployeeInformation;
+
+public class Employee {
+
+        String firstName;
+        String lastName;
+        int age;
+        double salary;
+        int ID;
+        static  int Id=555;
+
+        public Employee(String firstName,String lastName,int age,double salary){
+            this.firstName= firstName;
+            this.lastName = lastName;
+            this.age = age;
+            this.salary = salary;
+            this.ID=Id;
+            Id ++;
+        }
+        public void setFirstName(String fName){
+            this.firstName = fName;
+        }
+        public void setLastName(String lName){
+            this.lastName = lName;
+        }
+        public void setAge(int Age){
+            this.age = Age;
+        }
+        public void setSalary(double newSalary){
+            this.salary = newSalary;
+        }
+        public String toString(){
+            return "Id: "+Id+" FirstName: "+firstName+" LastName: "+lastName+" Age: "+age+" Salary: "+salary;
+        }
+
+    public double getSalary() {
+        return 0;
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------
+package EmployeeInformation;
+
+import EmployeeInformation.Employee;
+
+import java.util.ArrayList;
+
+public class EmployeeSystem {
+
+    ArrayList<Employee> employeeList = new ArrayList<Employee>();
+
+    public void hireEmployee(Employee newEmployee) {
+        employeeList.add(newEmployee);
+    }
+
+    public void removeMockemployee(Employee emp1) {
+        employeeList.remove(0);
+    }
+
+    public double increaseSalary(Employee newEmp, int percentage) {
+        double newSalary;
+        if ((percentage <= 1) && (percentage > 0)) {
+            newSalary = newEmp.getSalary() * (1 + percentage);
+        } else {
+            System.out.println("Sorry:Your salary is too low to get the percentage");
+            newSalary = newEmp.getSalary();
+        }
+        return newSalary;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------
+package EmployeeInformation;
+import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+    public class EmployeeSystemTest {
+        @BeforeAll
+        static void beforeAll() {
+            System.out.println("Testing starts ");
+        }
+
+        @AfterAll
+        static void afterAll() {
+            System.out.println("Testing is done ");
+        }
+
+        @BeforeEach
+        void beforeEach(TestInfo info) {
+            System.out.println("Current test :" + info.getDisplayName());
+        }
+
+        @AfterEach
+        void AfterEach(TestInfo info) {
+            System.out.println("Current test finished :" + info.getDisplayName());
+        }
+
+        @Test
+        @DisplayName("Testing EmployeeClass ")
+        void EmployeeTest() {
+            Employee employee = new Employee("Umair", "Younas", 31, 5000);
+            assertEquals("Id: 556 FirstName: Umair LastName: Younas Age: 31 Salary: 5000.0", employee.toString());
+            employee.setLastName("Mustfa");
+            assertEquals("Id: 556 FirstName: Umair LastName: Mustfa Age: 31 Salary: 5000.0", employee.toString());
+            employee.setFirstName("Saba");
+            assertEquals("Id: 556 FirstName: Saba LastName: Mustfa Age: 31 Salary: 5000.0", employee.toString());
+            employee.setAge(35);
+            assertEquals("Id: 556 FirstName: Saba LastName: Mustfa Age: 35 Salary: 5000.0", employee.toString());
+            employee.setSalary(2500);
+            assertEquals("Id: 556 FirstName: Saba LastName: Mustfa Age: 35 Salary: 2500.0", employee.toString());
+        }
+
+        @Mock
+        Employee emp1;
+        Employee emp2;
+        Employee emp3;
+
+        @Test
+        @DisplayName("Adding Function")
+        void addMockTest() {
+            EmployeeSystem employeeSystem = new EmployeeSystem();
+            int expected = 2;
+            employeeSystem.hireEmployee(emp1);
+            employeeSystem.hireEmployee(emp2);
+            assertEquals(expected, employeeSystem.employeeList.size());
+        }
+
+        @Test
+        @DisplayName("Removing Function")
+        void removeMockTest() {
+            EmployeeSystem employeeSystem = new EmployeeSystem();
+            int expected = 1;
+            employeeSystem.hireEmployee(emp1);
+            employeeSystem.hireEmployee(emp2);
+            employeeSystem.hireEmployee(emp3);
+            employeeSystem.removeMockemployee(emp1);
+            employeeSystem.removeMockemployee(emp2);
+            assertEquals(expected, employeeSystem.employeeList.size());
+        }
+
+    }
+
+
